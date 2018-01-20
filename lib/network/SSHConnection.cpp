@@ -107,7 +107,6 @@ void SSHConnection::terminate() {
             if (kill(childPid, SIGTERM)) {
                 std::cout << "Error killing child process: " << strerror(errno) << std::endl;
             }
-            waitpid(childPid, &childState, 0);
         }
         childPid = 0;
         std::cout << "SSH terminated with exit code " << WEXITSTATUS(childState) << std::endl;
