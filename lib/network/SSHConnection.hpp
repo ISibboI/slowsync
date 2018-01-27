@@ -2,7 +2,6 @@
 #define SLOWSYNC_SSHCONNECTION_HPP
 
 #include <string>
-#include <vector>
 
 class SSHConnection {
 public:

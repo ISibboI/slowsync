@@ -69,25 +69,7 @@ bool SSHConnection::connect() {
     error |= result == -1;
     error |= fcntl(sshInFD, F_SETFL, result | O_NONBLOCK);
 
-    if (error != 0) {
-        return false;
-    }
-
-    // Do initial handshake
-    std::cout << "Doing handshake" << std::endl;
-    std::string command("echo slowsync\n");
-    if (send((void*) command.c_str(), command.size()) != command.size()) {
-        std::cout << "Error sending handshake" << std::endl;
-        return false;
-    }
-    char buf[1024];
-    ssize_t received = 0;
-    for (int i = 0; i < 10 && received == 0; i++) {
-        sleep(1);
-        received = receive(buf, 1024);
-        buf[received] = 0;
-        std::cout << buf << std::endl;
-    }
+    return error == 0;
 }
 
 void SSHConnection::terminate() {
@@ -125,6 +107,7 @@ ssize_t SSHConnection::send(void *buf, size_t count) {
     ssize_t result = write(sshOutFD, buf, count);
     if (result == -1) {
         std::cout << "Could not write to SSH: " << strerror(errno) << std::endl;
+        terminate();
     }
     return result;
 }

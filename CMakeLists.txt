@@ -7,5 +7,7 @@ add_subdirectory(lib/network)
 
 include_directories(PUBLIC lib/)
 
-add_executable(ssh_pingpong app/ssh_pingpong.cpp)
+add_executable(ssh_pingpong app/ssh_pingpong_test.cpp)
 target_link_libraries(ssh_pingpong network)
+
+add_executable(server app/server.cpp)
