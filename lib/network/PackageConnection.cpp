@@ -2,6 +2,7 @@
 
 #include <stdexcept>
 #include <iostream>
+#include <limits>
 
 PackageConnection::PackageConnection(SSHConnection *sshConnection) :
         sshConnection(sshConnection) {}
@@ -25,15 +26,17 @@ void PackageConnection::send(std::vector<char> &package) {
     if (package.size() > std::numeric_limits<int>::max()) {
         throw std::runtime_error("Package too large");
     }
+    std::cout << "Sending package of size " << package.size() << std::endl;
     auto size = (int) package.size();
     sendBuffer((char*) &size, sizeof(int));
     sendBuffer(package.data(), package.size());
+    std::cout << "Sent package" << std::endl;
 }
 
 void PackageConnection::sendBuffer(char *buffer, const size_t size) {
     size_t sent = 0;
     while (sent < size) {
-        ssize_t sendResult = sshConnection->send(buffer + sent, size- sent);
+        ssize_t sendResult = sshConnection->send(buffer + sent, size - sent);
         if (sendResult == -1) {
             throw std::runtime_error("Error sending package");
         }

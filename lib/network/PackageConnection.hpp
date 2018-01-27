@@ -13,13 +13,11 @@ public:
     void terminate();
     void send(std::vector<char>& package);
     void receive(std::vector<char>& package);
+    void sendBuffer(char* buffer, size_t size);
+    void receiveBuffer(char* buffer, size_t size);
 
 private:
     SSHConnection* sshConnection;
-    const int send_idle_timeout = 10000;
-
-    void sendBuffer(char* buffer, size_t size);
-    void receiveBuffer(char* buffer, size_t size);
 };
 
 

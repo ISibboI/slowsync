@@ -103,7 +103,7 @@ void SSHConnection::terminate() {
 }
 
 ssize_t SSHConnection::send(void *buf, size_t count) {
-    std::cout << "Sending up to " << count << " bytes" << std::endl;
+    // std::cout << "Sending up to " << count << " bytes" << std::endl;
     ssize_t result = write(sshOutFD, buf, count);
     if (result == -1) {
         std::cout << "Could not write to SSH: " << strerror(errno) << std::endl;
@@ -113,13 +113,13 @@ ssize_t SSHConnection::send(void *buf, size_t count) {
 }
 
 ssize_t SSHConnection::receive(void *buf, size_t count) {
-    std::cout << "Receiving up to " << count << " bytes" << std::endl;
+    // std::cout << "Receiving up to " << count << " bytes" << std::endl;
     int available;
     if (ioctl(sshInFD, FIONREAD, &available)) {
         std::cout << "Could not check bytes available: " << strerror(errno) << std::endl;
         return -1;
     }
-    std::cout << "Bytes available: " << available << std::endl;
+    // std::cout << "Bytes available: " << available << std::endl;
     if (available == 0) {
         return 0;
     }
