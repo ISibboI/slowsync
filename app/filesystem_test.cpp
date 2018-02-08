@@ -7,7 +7,7 @@
 #include "ftree/FileTreeBuffer.hpp"
 
 int main(int argc, char** argv) {
-    SSHConnection ssh("/usr/bin/ssh", "sibbo", "localhost", "/home/sibbo/git/slowsync/cmake-build-debug/server");
+    SSHConnection ssh("/usr/bin/ssh", "bash", "localhost", "/home/bash/git/slowsync/cmake-build-debug/server");
     PackageConnection con(&ssh);
     BufferedOutputStream out(&con);
     bool connected = con.connect();
@@ -15,7 +15,7 @@ int main(int argc, char** argv) {
 
     std::vector<char> requestFileList;
     requestFileList.assign(1, 'S');
-    std::string path("/home/sibbo/git/slowsync");
+    std::string path("/home/bash/git/slowsync");
     size_t size = path.size();
     requestFileList.insert(requestFileList.end(), (char*) &size, (char*) ((&size) + 1));
     requestFileList.insert(requestFileList.end(), path.data(), path.data() + path.size());
@@ -25,6 +25,10 @@ int main(int argc, char** argv) {
 
     std::ofstream persistentCopy("tree.bin");
     ftb.persist(persistentCopy);
+
+    for (const auto& file : ftb) {
+        std::cout << file.m_path.string() << std::endl;
+    }
 
     return 0;
 }
