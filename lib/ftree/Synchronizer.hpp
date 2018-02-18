@@ -4,9 +4,9 @@
 #include <boost/filesystem.hpp>
 #include "FileTreeBuffer.hpp"
 
-class Synchroniser {
+class Synchronizer {
 public:
-    Synchroniser(const boost::filesystem::path& new_increment, const boost::filesystem::path& last_increment, std::ostream* log);
+    Synchronizer(const boost::filesystem::path& new_increment, const boost::filesystem::path& last_increment, std::ostream* log);
 
     /** Hardlinks files from the last increment to the new increment if they didn't change.
      * \returns A list of files that need to be downloaded from the backup source

@@ -82,6 +82,9 @@ FileTreeBufferIt::FileTreeBufferIt(std::FILE *tmp, bool is_end) :
         m_tmp(tmp),
         m_is_end(is_end) {
     std::rewind(m_tmp);
+    if (!m_is_end) {
+        operator++();
+    }
 }
 
 FileTreeBufferIt& FileTreeBufferIt::operator++() {
