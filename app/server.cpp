@@ -36,7 +36,7 @@ int main(int argc, char** argv) {
         std::cin.read(buffer, packageLength);
         switch (buffer[0]) {
             case Command::Exit:
-                return 0;
+                running = false;
             case Command::Scan: {
                 log << "Received scan command" << std::endl;
                 size_t size = *((size_t*)(buffer + 1));
@@ -48,9 +48,10 @@ int main(int argc, char** argv) {
                 log << "Path is " << path << std::endl;
                 DirectoryScanner scanner(&std::cout, &log);
                 scanner.scanDirectory(path);
+                break;
             }
             default:
-                log << "Unknown command" << std::endl;
+                log << "Unknown command: " << buffer[0] << std::endl;
                 return 1;
         }
     }
