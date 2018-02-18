@@ -13,6 +13,11 @@ void DirectoryScanner::scanDirectoryRecursive(const boost::filesystem::path &bas
     boost::filesystem::directory_iterator limit;
     boost::filesystem::directory_iterator entry(canonical_path);
     for (; entry != limit; ++entry) {
+        if ((entry->status().permissions() & 0004) != 0004) {
+            // We can't read the file, so let's just skip it
+            *m_log << "Skipping file without others read permissions: " << entry->path().string() << std::endl;
+            continue;
+        }
         if (boost::filesystem::is_regular_file(entry->status())) {
             emitFile(entry->path());
         } else if (boost::filesystem::is_directory(entry->status())) {
