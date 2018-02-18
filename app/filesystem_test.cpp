@@ -5,6 +5,7 @@
 
 #include "network/BufferedOutputStream.hpp"
 #include "ftree/FileTreeBuffer.hpp"
+#include "ftree/Synchronizer.hpp"
 
 int main(int argc, char** argv) {
     SSHConnection ssh("/usr/bin/ssh", "bash", "localhost", "/home/bash/git/slowsync/cmake-build-debug/server");
@@ -28,6 +29,13 @@ int main(int argc, char** argv) {
 
     for (const auto& file : ftb) {
         std::cout << file.m_path.string() << std::endl;
+    }
+
+    Synchronizer synchronizer("/home/bash/slowsynctest", "/home/bash/git/slowsync", &std::cout);
+    const auto to_download = synchronizer.synchronize_locally(ftb);
+
+    for (const auto& path : to_download) {
+        std::cout << "To download: " << path.string() << std::endl;
     }
 
     return 0;
